@@ -21,7 +21,7 @@ class PlaceImage(models.Model):
         verbose_name='Место или мероприятие'
     )
     image = models.ImageField('Картинка', upload_to='places/')
-    order = models.PositiveIntegerField(default=0, verbose_name='Порядок отображения')
+    order = models.PositiveIntegerField(default=0, verbose_name='Порядок отображения', db_index=True)
 
     class Meta:
         ordering = ['order']
