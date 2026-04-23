@@ -18,7 +18,6 @@ class PlaceImage(models.Model):
         Place,
         related_name='images',
         on_delete=models.CASCADE,
-        null=True
     )
     image = models.ImageField('Картинка', upload_to='places/')
     order = models.PositiveIntegerField(default=0)
