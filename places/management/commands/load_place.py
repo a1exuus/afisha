@@ -20,6 +20,9 @@ class Command(BaseCommand):
         response.raise_for_status()
         raw_place = response.json()
 
+        if 'error' in raw_place:
+            raise requests.exceptions.HTTPError(raw_place['error'])
+
         place_obj, created = Place.objects.get_or_create(
             title=raw_place['title'],
             defaults={
@@ -46,6 +49,9 @@ class Command(BaseCommand):
                         place=place_obj,
                         order=number
                     )
+
+                    if 'error' in response.content:
+                        raise requests.exceptions.HTTPError(response.content['error'])
 
                     img_instance.image.save(
                         filename, ContentFile(response.content), save=True
