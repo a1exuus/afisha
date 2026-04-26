@@ -16,25 +16,25 @@ class Command(BaseCommand):
                     self.style.SUCCESS('\nНачинаем загрузку!')
                     )
         url = options['json_url']
+        response = requests.get(url)
+        response.raise_for_status()
+        raw_place = response.json()
+
+        place_obj, created = Place.objects.get_or_create(
+            title=raw_place['title'],
+            defaults={
+                'short_description': raw_place.get('short_description'),
+                'long_description': raw_place.get('long_description'),
+                'longitude': raw_place['coordinates']['lng'],
+                'latitude': raw_place['coordinates']['lat'],
+            }
+        )
+
+        if not created:
+            self.stdout.write(f"Место {place_obj.title} уже загружено!")
+            return
+
         try:
-            response = requests.get(url)
-            response.raise_for_status()
-            raw_place = response.json()
-
-            place_obj, created = Place.objects.get_or_create(
-                title=raw_place['title'],
-                defaults={
-                    'short_description': raw_place.get('short_description'),
-                    'long_description': raw_place.get('long_description'),
-                    'longitude': raw_place['coordinates']['lng'],
-                    'latitude': raw_place['coordinates']['lat'],
-                }
-            )
-
-            if not created:
-                self.stdout.write(f"Место {place_obj.title} уже загружено!")
-                return
-
             if created:
                 for number, img_url in enumerate(raw_place['imgs'], 1):
                     response = requests.get(img_url)
