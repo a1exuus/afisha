@@ -1,8 +1,10 @@
-from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile
-from places.models import Place, PlaceImage
-import requests
 import os
+
+import requests
+from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
+
+from places.models import Place, PlaceImage
 
 
 class Command(BaseCommand):
