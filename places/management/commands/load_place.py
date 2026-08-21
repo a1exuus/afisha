@@ -28,8 +28,8 @@ class Command(BaseCommand):
         place_obj, created = Place.objects.get_or_create(
             title=raw_place['title'],
             defaults={
-                'short_description': raw_place.get('short_description'),
-                'long_description': raw_place.get('long_description'),
+                'short_description': raw_place.get('description_short'),
+                'long_description': raw_place.get('description_long'),
                 'longitude': raw_place['coordinates']['lng'],
                 'latitude': raw_place['coordinates']['lat'],
             }
@@ -51,9 +51,6 @@ class Command(BaseCommand):
                         place=place_obj,
                         order=number
                     )
-
-                    if 'error' in response.content:
-                        raise requests.exceptions.HTTPError(response.content['error'])
 
                     img_instance.image.save(
                         filename, ContentFile(response.content), save=True

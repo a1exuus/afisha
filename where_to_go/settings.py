@@ -17,6 +17,14 @@ DEBUG = env.bool('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
 
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 500,
+    'menubar': True,
+    'plugins': 'advlist autolink lists link image charmap print preview anchor code',
+    'toolbar': 'undo redo | formatselect | bold italic | code | help',  # Добавил 'code'
+}
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
